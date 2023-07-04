@@ -1,13 +1,15 @@
 #pragma once
 #include <string>
+#include "Define.h"
 
 // 基类 Person =====================================================================================================================
 class Person {
 public:
-	Person(std::string acc, std::string pass, std::string nm, std::string gend, std::string ph_num);
+	Person(std::string acc , std::string pass, std::string nm = "", std::string gend = "男", std::string ph_num = "");
 	~Person();
+	Person& operator=(const Person&);//重载赋值运算符
 protected:
-    void view_individual_inf(); //查看个人信息
+    void view_per_info(); //查看个人信息
 	void modify_pass(); //修改密码
 private:
 	std::string account;
@@ -17,29 +19,30 @@ private:
 	std::string phoneNumber;
 };
 
-// 三个子类 ==============================================================================================================================
+// Student类 ==============================================================================================================================
+
 class Student : public Person{
 public:
-	Student(std::string acc, std::string pass, std::string nm, std::string gend, std::string ph_num, std::string address);
+	Student(std::string acc = ACCOUNT[STUDENT], std::string pass = PASSWORD[STUDENT], std::string nm, std::string gend, std::string ph_num, std::string addr = "");
 	~Student();
 	Student& operator=(const Student&);
 protected:
-	void check_individual_score();//查询个人成绩
+	void view_per_score();//查询个人成绩
 private:
 	std::string address;
-	double textScore[4];
-	double qualScore[4];
-	double comphScore;
-	int textRand;
-	int comphscoreRand;
-	Student* next;
+	double testScore[4];//考试成绩：语文、数学、英语，平均
+	double qualScore[5];//素质成绩：语文教师评分、数学教师评分、英语教师评分、同学互评分、品德成绩
+	double comphScore;//综测总分
+	int testRand;//考试排名
+	int comphscoreRand;//综测总评排名
+	Student* next;//指向下个节点的后继指针
 };
 
 class Teacher :public Person{
 public:
 	Teacher(std::string acc, std::string pass, std::string nm, std::string gend, std::string ph_num, std::string subject);
 	~Teacher();
-	Teacher& operator=(const Teacher&);
+	Teacher& operator=(const Teacher&);//重载赋值运算符
 protected:
 	void input_stu_score(); //录入学生成绩
 	void announce_score(); //发布学生成绩
